@@ -15,8 +15,6 @@ lowerTriangle = zeros(5);
 finalB = zeros(1);
 
 
-
-
 %gaussian elimination
 for index = 1 : 4
   %create a diagonal matrix of 1
@@ -48,19 +46,74 @@ for index = 1 : 4
   
   %last column
   if index == 4
-    lowerTriangle = MA;
+    upperTriangular = MA;
     finalB = MB;
   end
 end
 
 disp('Question 1 Part 2');
-disp('Lower Triangle: ');
-disp(lowerTriangle);
+disp('Upper Triangle: ');
+disp(upperTriangular);
 disp('Final MB: ');
 disp(finalB);
 disp('-------------------------------');
 
+%----------------------------------------------
 %Question 1 Part 3
-[L, U] = lu(A);
+r = rref(A);
 disp('Display with MATLAB routine:');
-disp(U);
+disp(r);
+disp(' ');
+
+%----------------------------------------------
+%Question 1 Part 4
+%backward substitution to solve for x
+x4 = zeros(5,1);
+for j = 5:-1:1
+    if (upperTriangular(j, j) == 0) 
+      continue; 
+    end;
+    x4(j, 1) = finalB(j) / upperTriangular(j, j);
+    b(1:j-1) = finalB(1:j-1) - upperTriangular(1:j-1, j) * x4(j);
+end
+
+disp('-------------------------------');
+disp('Question 1 Part 4:');
+disp(x4);
+disp('-------------------------------');
+
+%----------------------------------------------
+%Question 1 Part 5
+solX_1 = A \ b;
+solX_2 = linsolve(A, b);
+disp('Question 1 - Part 5');
+disp('1st way:');
+disp(solX_1);
+disp('2nd way:');
+disp(solX_2);
+disp(' ');
+
+%------------------------------------------------
+%Question 2
+
+A2 = [ 2    4   (-2);
+       4    9   (-3);
+     (-2) (-1)    7;]; 
+     
+b2 = [ 2;
+       8;
+      10;];
+      
+c2 = [ 4 ;
+       8 ;
+     (-6);];
+
+[L, U] = lu(A2);
+part1 = U\b2;
+part2 = U\c2;
+
+disp('Question 2 - ');
+disp('Part 1:');
+disp(part1);
+disp('Part 2:');
+disp(part2);
